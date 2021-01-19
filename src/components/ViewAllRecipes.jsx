@@ -2,35 +2,24 @@ import React, {useEffect, useState} from "react";
 import RecipeSummary from "./RecipeSummary";
 import Loading from "./Loading";
 import {Button} from "react-bootstrap";
+import {getRecipes} from "../services/recipeService";
 
-const recipesResult = [
-  {
-    id: 500,
-    title: "Brussels Sprouts with Brown Butter",
-    author: "Dang Ton",
-    prepTime: 45,
-    intro: "A basic method for a family of 4",
-    yield: 4
-  },
-  {
-    id: 600,
-    title: "Fried Eggs with Sesame Oil",
-    author: "Atticus Pomerantz",
-    prepTime: 5,
-    intro: "Traditional fried eggs with a twist!",
-    yield: 2
-  }
-]
-
-export default function ViewAllRecipes () {
+export default function ViewAllRecipes() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
+  useEffect(async () => {
+    let recipesResult = [];
+    try {
+      recipesResult = await getRecipes();
       setRecipes(recipesResult);
+    } catch (e) {
+      console.error('no data');
+      throw e;
+    }
+    finally {
       setLoading(false);
-    }, 300)
+    }
   }, [])
 
   if (loading) return <Loading/>

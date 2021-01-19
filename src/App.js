@@ -4,7 +4,8 @@ import Header from "./components/Header";
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
 
 import EditRecipe from "./components/EditRecipe";
@@ -15,9 +16,9 @@ function App() {
   return (
       <>
         <div>
-          <Header/>
-          <main className="main-content">
-            <Router>
+          <Router>
+            <Header/>
+            <main className="main-content">
               <Switch>
                 <Route path="/edit_recipe/:recipeId">
                   <EditRecipe/>
@@ -31,13 +32,17 @@ function App() {
                   <ViewAllRecipes/>
                 </Route>
 
+                <Route exact path="/">
+                  <Redirect to="/view_recipes"/>
+                </Route>
+
                 <Route path="/*">
                   <NotFound/>
                 </Route>
 
               </Switch>
-            </Router>
-          </main>
+            </main>
+          </Router>
         </div>
       </>
   );
